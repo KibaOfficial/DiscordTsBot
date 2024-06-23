@@ -12,7 +12,7 @@ const command: Command = {
     .setName('reboot')
     .setDescription('Restarts the bot (Admin only)'),
   async execute(interaction) {
-    const allowedUserId = process.env.OWNER_ID || '527226403897212938';
+    const allowedUserId = process.env.OWNER_ID || 'OWNER_ID_HERE';
 
     if (interaction.user.id !== allowedUserId) {
       await interaction.reply({ content: 'You do not have permission to execute this command.', ephemeral: true });

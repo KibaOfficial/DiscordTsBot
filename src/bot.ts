@@ -12,6 +12,7 @@ dotenv.config();
 
 const discordToken = process.env.DISCORD_TOKEN;
 const discordClientId = process.env.DISCORD_CLIENT_ID;
+const guildId = process.env.GUILD_ID
 
 const bot = new Bot({
   intents: [
@@ -56,7 +57,7 @@ async function startBot() {
     console.log('Bot is connected and ready.');
     
     // Register commands for the specific guild
-    await registerCommandsForGuild('1254057467802030200');
+    await registerCommandsForGuild(guildId || 'GUILD_ID_HERE');
   } catch (error) {
     console.error('Error starting bot:', error);
   }

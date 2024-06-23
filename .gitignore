@@ -28,7 +28,7 @@ yarn-error.log
 .vscode/
 
 # Ignore project specific build output
-/build/
+/dist/
 
 # Ignore dependencies installed by npm or yarn
 /package-lock.json
