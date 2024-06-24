@@ -3,7 +3,14 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { Client as Bot, GatewayIntentBits, REST, Routes, RESTPostAPIApplicationCommandsJSONBody } from 'discord.js';
+import { 
+  Client as Bot, 
+  GatewayIntentBits, 
+  REST, 
+  Routes, 
+  RESTPostAPIApplicationCommandsJSONBody, 
+  GuildMember 
+} from 'discord.js';
 import fs from 'fs';
 import path from 'path';
 import { Command } from './types';
@@ -56,7 +63,6 @@ async function startBot() {
     await bot.login(discordToken);
     console.log('Bot is connected and ready.');
     
-    // Register commands for the specific guild
     await registerCommandsForGuild(guildId || 'GUILD_ID_HERE');
   } catch (error) {
     console.error('Error starting bot:', error);

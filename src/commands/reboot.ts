@@ -16,6 +16,7 @@ const command: Command = {
 
     if (interaction.user.id !== allowedUserId) {
       await interaction.reply({ content: 'You do not have permission to execute this command.', ephemeral: true });
+      await console.error(`${interaction.user.globalName} with the user id ${interaction.user.id} has tried to reboot the Bot`);
       return;
     }
 

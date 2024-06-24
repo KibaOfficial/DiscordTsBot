@@ -13,8 +13,7 @@ const command: Command = {
   async execute(interaction) {
     const sent = await interaction.reply({ content: 'Pinging...', fetchReply: true });
     const timeTaken = sent.createdTimestamp - interaction.createdTimestamp;
-    const apiLatency = Math.round(interaction.client.ws.ping);
-    await interaction.editReply(`Pong! Latency is ${timeTaken}ms. API Latency is ${apiLatency}ms.`);
+    await interaction.editReply(`Pong! Latency is ${timeTaken}ms.`);
   },
 };
 
