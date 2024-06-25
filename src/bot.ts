@@ -2,14 +2,13 @@
 // 
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-
 import { 
   Client as Bot, 
   GatewayIntentBits, 
   REST, 
   Routes, 
   RESTPostAPIApplicationCommandsJSONBody, 
-  GuildMember 
+  Collection,
 } from 'discord.js';
 import fs from 'fs';
 import path from 'path';
@@ -19,7 +18,7 @@ dotenv.config();
 
 const discordToken = process.env.DISCORD_TOKEN;
 const discordClientId = process.env.DISCORD_CLIENT_ID;
-const guildId = process.env.GUILD_ID
+const guildId = process.env.GUILD_ID;
 
 const bot = new Bot({
   intents: [
@@ -30,14 +29,14 @@ const bot = new Bot({
   ],
 });
 
-const commands: Command[] = [];
+const commands = new Collection<string, Command>();
 const commandData: RESTPostAPIApplicationCommandsJSONBody[] = [];
 const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.ts'));
 
 for (const file of commandFiles) {
   try {
     const command = require(`./commands/${file}`).default as Command;
-    commands.push(command);
+    commands.set(command.data.toJSON().name, command);
     commandData.push(command.data.toJSON());
   } catch (error) {
     console.error(`Invalid command file: ${file}. Expected a valid SlashCommandBuilder object.`);
@@ -76,7 +75,7 @@ bot.on('ready', async () => {
 bot.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return;
 
-  const command = commands.find(cmd => cmd.data.name === interaction.commandName);
+  const command = commands.get(interaction.commandName);
 
   if (!command) {
     console.error(`Command not found: ${interaction.commandName}`);
@@ -103,4 +102,4 @@ async function rebootBot() {
 
 startBot();
 
-export { bot, registerCommandsForGuild, rebootBot }; 
+export { bot, registerCommandsForGuild, rebootBot };
