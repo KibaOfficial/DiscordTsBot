@@ -28,18 +28,7 @@ const command: Command = {
       await rebootBot();
       await registerCommandsForGuild(guildId || '');
       console.log('Bot restarted successfully.');
-
-      try {
-        const replyMessage = await interaction.editReply('Bot is restarting...');
-        if (!replyMessage) throw new Error('Reply message not found.');
-
-        await replyMessage.edit('Bot is online!');
-        console.log('Bot restarted by user:', interaction.user.tag);
-        console.log('Bot restart complete.');
-      } catch (error) {
-        console.error('Error editing reply message:', error);
-        await interaction.followUp('Bot is online!');
-      }
+      await interaction.followUp('Bot is online!');
       
     } catch (error) {
       console.error('Error restarting bot:', error);
