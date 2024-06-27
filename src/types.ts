@@ -10,3 +10,8 @@ export interface Command {
   name?: string;
   execute(interaction: CommandInteraction): Promise<void>;
 }
+
+export interface LoggerProps {
+  status: String
+  message: String
+}

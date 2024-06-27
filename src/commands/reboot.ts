@@ -5,7 +5,8 @@
 
 import { SlashCommandBuilder } from 'discord.js';
 import { Command } from '../types';
-import { bot, rebootBot, registerCommandsForGuild } from '../bot';
+import { rebootBot, registerCommandsForGuild } from '../bot';
+import logger from '../utils/logger';
 
 const guildId = process.env.GUILD_ID
 
@@ -18,20 +19,20 @@ const command: Command = {
 
     if (interaction.user.id !== allowedUserId) {
       await interaction.reply({ content: 'You do not have permission to execute this command.', ephemeral: true });
-      console.error(`${interaction.user.globalName} with the user id ${interaction.user.id} has tried to reboot the Bot`);
+      logger({ status: "ERROR", message: `${interaction.user.globalName} with the user id ${interaction.user.id} has tried to reboot the Bot`});
       return;
     }
 
     try {
       await interaction.deferReply({ ephemeral: true });
-      console.log('Initiating bot restart...');
+      logger({ status: "INFO", message: 'Initiating bot restart...'});
       await rebootBot();
       await registerCommandsForGuild(guildId || '');
-      console.log('Bot restarted successfully.');
+      logger({ status: "INFO", message: "Bot restarted successfully."});
       await interaction.followUp('Bot is online!');
       
     } catch (error) {
-      console.error('Error restarting bot:', error);
+      logger({ status: "ERROR", message: `Error restarting bot: ${error}`});
       await interaction.editReply('An error occurred while restarting the bot.');
     }
   },

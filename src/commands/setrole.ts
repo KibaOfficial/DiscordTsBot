@@ -5,6 +5,7 @@
 
 import { SlashCommandBuilder, GuildMember, ChatInputCommandInteraction } from 'discord.js';
 import { Command } from '../types';
+import logger from '../utils/logger';
 
 const command: Command = {
   data: new SlashCommandBuilder()
@@ -48,7 +49,7 @@ const command: Command = {
       await member.roles.add(role.id);
       await interaction.reply({ content: `Successfully assigned the role ${role.name} to ${user.tag}.`, ephemeral: true });
     } catch (error) {
-      console.error(error);
+      logger({ status: "ERROR", message: `Error adding role (${role.name}) to ${member.nickname}: ${error}`});
       await interaction.reply({ content: 'Failed to assign the role.', ephemeral: true });
     }
   }

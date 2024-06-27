@@ -15,6 +15,7 @@ import fs from 'fs';
 import path from 'path';
 import { Command } from './types';
 import dotenv from 'dotenv';
+import logger from './utils/logger';
 dotenv.config();
 
 const discordToken = process.env.DISCORD_TOKEN;
@@ -40,7 +41,7 @@ for (const file of commandFiles) {
     commands.set(command.data.toJSON().name, command);
     commandData.push(command.data.toJSON());
   } catch (error) {
-    console.error(`Invalid command file: ${file}. Expected a valid SlashCommandBuilder object.`);
+    logger({ status: "ERROR", message: `Invalid command file: ${file}. Expected a valid SlashCommandBuilder object.`});
   }
 }
 
@@ -52,25 +53,24 @@ async function registerCommandsForGuild(guildId: string) {
       Routes.applicationGuildCommands(discordClientId || "DISCORD_CLIENT_ID_HERE", guildId),
       { body: commandData }
     );
-    console.log(`Successfully registered application (/) commands for guild ${guildId}.`);
+    logger({ status: "INFO", message: `Successfully registered application (/) commands for guild ${guildId}.`});
   } catch (error) {
-    console.error(`Error registering application (/) commands for guild ${guildId}:`, error);
+    logger({ status: "ERROR", message: `Error registering application (/) commands for guild ${guildId}: ${error}`});
   }
 }
 
 async function startBot() {
   try {
     await bot.login(discordToken);
-    console.log('Bot is connected and ready.');
-    
+    logger({ status: "INFO", message: 'Bot is connected and ready.'})
     await registerCommandsForGuild(guildId || 'GUILD_ID_HERE');
   } catch (error) {
-    console.error('Error starting bot:', error);
+    logger({ status: "ERROR", message: `Error starting bot: ${error}`});
   }
 }
 
 bot.on('ready', async () => {
-  console.log('Bot is ready.');
+  logger({ status: "INFO", message: "Bot is ready."});
 });
 
 bot.on('interactionCreate', async interaction => {
@@ -79,14 +79,14 @@ bot.on('interactionCreate', async interaction => {
   const command = commands.get(interaction.commandName);
 
   if (!command) {
-    console.error(`Command not found: ${interaction.commandName}`);
+    logger({ status: "ERROR", message: `Command not found: ${interaction.commandName}`});
     return;
   }
 
   try {
     await command.execute(interaction);
   } catch (error) {
-    console.error(`Error executing command ${interaction.commandName}:`, error);
+    logger({ status: "ERROR", message: `Error executing command ${interaction.commandName}: ${error}`});
     await interaction.reply({ content: 'There was an error while executing this command', ephemeral: true });
   }
 });
@@ -95,9 +95,9 @@ async function rebootBot() {
   try {
     await bot.destroy();
     await bot.login(discordToken);
-    console.log('Bot restarted successfully.');
+    logger({ status: "INFO", message: "Bot restarted successfully."});
   } catch (error) {
-    console.error('Error restarting bot:', error);
+    logger({ status: "ERROR", message: `Error restarting bot: ${error}`});
   }
 }
 
