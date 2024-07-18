@@ -10,6 +10,8 @@ import {
   Routes, 
   RESTPostAPIApplicationCommandsJSONBody, 
   Collection,
+  EmbedBuilder,
+  TextChannel,
 } from 'discord.js';
 import fs from 'fs';
 import path from 'path';
@@ -45,6 +47,21 @@ for (const file of commandFiles) {
   }
 }
 
+// TODO: Fix Eventhandler
+// const eventsPath = path.join(__dirname, 'events')
+// const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.ts'));
+
+// for (const file of eventFiles) {
+//   const filePath = path.join(eventsPath, file);
+//   const event = require(filePath) as { name: string; once: boolean; execute: (...args: any[]) => void };
+  
+//   if (event.once) {
+//       bot.once(event.name, (...args: any[]) => event.execute(...args));
+//   } else {
+//       bot.on(event.name, (...args: any[]) => event.execute(...args));
+//   }
+// }
+
 async function registerCommandsForGuild(guildId: string) {
   const rest = new REST({ version: '10' }).setToken(discordToken || "DISCORD_TOKEN_HERE");
 
@@ -72,6 +89,29 @@ async function startBot() {
 bot.on('ready', async () => {
   logger({ status: "INFO", message: "Bot is ready."});
 });
+
+bot.on('guildMemberAdd', async member => {
+  const welcomeChannelId = process.env.WELCOME_ID;
+  if (!welcomeChannelId) {
+    logger({ status: "ERROR", message: "WELCOME_ID is not set"});
+    return;
+  }
+
+  const channel = member.guild.channels.cache.get(welcomeChannelId) as TextChannel;
+  if (!channel || !channel.isTextBased) {
+    logger({ status: "ERROR", message: "Welcome channel is not a text channel or not found"});
+    return;
+  }
+
+  const totalMembers = member.guild.memberCount;
+  const welcomeEmbed = new EmbedBuilder()
+    .setColor('#00ff00')
+    .setTitle('Willkommen')
+    .setDescription(`Willkommen auf dem Server, ${member.user.tag}! Du bist der ${totalMembers}. User hier`)
+    .setThumbnail(member.user.displayAvatarURL());
+
+  await channel.send({ embeds: [welcomeEmbed]});
+})
 
 bot.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return;
