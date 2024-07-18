@@ -1,5 +1,5 @@
 {
-  "name": "galaxybot",
+  "name": "discordtsbot",
   "version": "1.0.0",
   "main": "dist/bot.js",
   "scripts": {
