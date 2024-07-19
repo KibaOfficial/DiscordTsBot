@@ -8,7 +8,7 @@ import { Command } from '../types';
 import { rebootBot, registerCommandsForGuild } from '../bot';
 import logger from '../utils/logger';
 
-const guildId = process.env.GUILD_ID
+const guildId = process.env.GUILD_ID;
 
 const command: Command = {
   data: new SlashCommandBuilder()

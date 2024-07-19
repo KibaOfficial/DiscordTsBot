@@ -32,9 +32,11 @@ To set up the bot, follow these steps:
 -- BOT STUFF ---
 DISCORD_TOKEN=YourDiscordBotToken
 DISCORD_CLIENT_ID=YourClientID
+
 -- GUILD STUFF ---
 GUILD_ID=YourGuildID
 WELCOME_CHANNEL_ID=YourWelcomeChannelID
+
 -- OWNER STUFF ---
 OWNER_ID=YourOwnerID
 ```
@@ -51,18 +53,29 @@ npm i
 
 To start the bot in development mode, run the following command:
 ```bash
-npm run dev
+./startBot.sh prod
+```
+or
+```batch
+./startBot.bat dev
+```
+or
+```pwsh
+./startBot.ps1 dev
 ```
 
 Or to build and start the bot for production:
 ```bash
-npm run build && npm run start
+./startBot.sh prod
 ```
-## Scripts
-
-- `npm run dev`: Starts the bot in development mode.
-- `npm run build`: Builds the project.
-- `npm run start`: Starts the bot in production mode.
+or
+```batch
+./startBot.bat prod
+```
+or
+```pwsh
+./startBot.ps1 prod
+```
 
 ## Contribute
 
