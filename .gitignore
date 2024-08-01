@@ -4,6 +4,9 @@ node_modules/
 # Ignore logs
 logs/
 
+# ignore my assets
+asstes/
+
 # Ignore temporary files
 *.log
 *.pid
