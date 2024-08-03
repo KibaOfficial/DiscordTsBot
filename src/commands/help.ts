@@ -5,12 +5,14 @@
 
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { Command } from "../types";
+import { bot } from "../bot";
 
 const command: Command = {
   data: new SlashCommandBuilder()
     .setName("help")
     .setDescription("Sends helpful information about this bot"),
   async execute(interaction) {
+    const emoji = bot.emojis.cache.get(":flag_de:")
     const embed =  new EmbedBuilder()
     .setColor("#00ff00")
     .setTitle("Willkommen")
@@ -29,7 +31,7 @@ const command: Command = {
       { name: '/reboot', value: "Reboots the bot" },
     )
     .setTimestamp()
-    .setFooter({ text: "Made with ❤️ by KibaOfficial in Germany 🇩🇪"})
+    .setFooter({ text: `Made with ❤️ by KibaOfficial in Germany`})
 
     interaction.reply({ embeds: [embed] });
   },
