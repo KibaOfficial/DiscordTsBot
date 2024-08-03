@@ -10,6 +10,9 @@ asstes/
 # ignore bot data
 data/
 
+# Ignore templates
+template/
+
 # Ignore temporary files
 *.log
 *.pid

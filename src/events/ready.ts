@@ -12,7 +12,7 @@ export default function (bot: Bot) {
 
     const activities = [
       { name: `watching on ${bot.guilds.cache.size} servers`, type: ActivityType.Watching },
-      { name: 'streaming content', type: ActivityType.Streaming, url: 'https://twitch.tv/KibaOfficial' },
+      { name: 'Watching Twitch', type: ActivityType.Streaming, url: 'https://twitch.tv/KibaOfficial' },
       { name: 'watching code on', type: ActivityType.Streaming, url: 'https://github.com/KibaOfficial'}
     ];
 
