@@ -4,6 +4,16 @@
 // https://opensource.org/licenses/MIT
 
 import { LoggerProps } from "../types";
+import fs from "fs";
+import path from "path";
+
+const logFile = path.join(__dirname, "../../logs/bot.log");
+const logDir = path.dirname(logFile);
+
+// Ensure the logs directory exists
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir, { recursive: true });
+}
 
 const getFormatedDate = (): string => {
   const currentDate = new Date();
@@ -18,9 +28,11 @@ const getFormatedDate = (): string => {
   );
 };
 
-const logger = ({ status, message}: LoggerProps): void => {
+const logger = ({ status, message }: LoggerProps): void => {
   const formattedDate = getFormatedDate();
-  console.log(`[${formattedDate}] [${status}]: ${message}`);
+  const logMessage = `[${formattedDate}] [${status}]: ${message}`;
+  console.log(logMessage);
+  fs.appendFileSync(logFile, logMessage + "\n");
 }
 
 export default logger;
